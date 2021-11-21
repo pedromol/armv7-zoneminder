@@ -1,11 +1,16 @@
 FROM debian:10
 
-RUN apt-get update  && \
- apt-get install -y gnupg apt-transport-https  wget ca-certificates curl && \
+RUN ln -s /usr/bin/dpkg-split /usr/sbin/dpkg-split && \
+    ln -s /usr/bin/dpkg-deb /usr/sbin/dpkg-deb && \
+    ln -s /usr/bin/nscd /usr/sbin/nscd && \
+    ln -s /bin/tar /usr/sbin/tar && \
+    ln -s /bin/rm /usr/sbin/rm
+
+RUN apt-get update && \
+ apt-get install -y gnupg apt-transport-https wget ca-certificates curl && \
  echo "deb [trusted=yes] https://zmrepo.zoneminder.com/debian/release-1.34 buster/" >> etc/apt/sources.list && \
- wget -O - https://zmrepo.zoneminder.com/debian/archive-keyring.gpg | apt-key add - && \
- apt-get update && \
- apt-get -y install zoneminder && \
+ apt-get update --allow-unauthenticated && \
+ apt-get -y --allow-unauthenticated install zoneminder && \
  adduser www-data video && \
  systemctl enable zoneminder.service && \
  a2enconf zoneminder && \
@@ -15,7 +20,6 @@ RUN apt-get update  && \
 EXPOSE 80
 
 RUN mkdir -p /var/cache/zoneminder && chown www-data:www-data -R /var/cache/zoneminder
-
 
 # Configure entrypoint
 COPY entrypoint.sh /usr/local/bin/
