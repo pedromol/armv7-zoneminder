@@ -8,7 +8,7 @@ RUN ln -s /usr/bin/dpkg-split /usr/sbin/dpkg-split && \
 
 RUN apt-get update && \
  apt-get install -y gnupg apt-transport-https wget ca-certificates curl && \
- echo "deb [trusted=yes] https://zmrepo.zoneminder.com/debian/release-1.34 buster/" >> etc/apt/sources.list && \
+ echo "deb [trusted=yes] https://zmrepo.zoneminder.com/debian/release-1.36 buster/" >> etc/apt/sources.list && \
  apt-get update --allow-unauthenticated && \
  apt-get -y --allow-unauthenticated install zoneminder && \
  adduser www-data video && \
