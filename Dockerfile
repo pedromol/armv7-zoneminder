@@ -1,4 +1,4 @@
-FROM debian:10
+FROM debian:11
 
 RUN ln -s /usr/bin/dpkg-split /usr/sbin/dpkg-split && \
     ln -s /usr/bin/dpkg-deb /usr/sbin/dpkg-deb && \
@@ -7,10 +7,10 @@ RUN ln -s /usr/bin/dpkg-split /usr/sbin/dpkg-split && \
     ln -s /bin/rm /usr/sbin/rm
 
 RUN apt-get update && \
- apt-get install -y gnupg apt-transport-https wget ca-certificates curl && \
- echo "deb [trusted=yes] https://zmrepo.zoneminder.com/debian/release-1.34 buster/" >> etc/apt/sources.list && \
- apt-get update --allow-unauthenticated && \
- apt-get -y --allow-unauthenticated install zoneminder && \
+ apt-get install -y gnupg apt-transport-https wget ca-certificates curl wget apt-utils && \
+ echo "deb [trusted=yes] https://zmrepo.zoneminder.com/debian/release-1.36 bullseye/" > etc/apt/sources.list.d/zoneminder.list && \
+ apt update && \
+ apt install -y zoneminder && \
  adduser www-data video && \
  systemctl enable zoneminder.service && \
  a2enconf zoneminder && \
